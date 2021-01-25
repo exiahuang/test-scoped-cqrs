@@ -1,13 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { SomethingCommand } from './commands/something/something.command';
+import { CreateSomethingCommand } from './commands/create-something/create-something.command';
+import { CommandExecutor } from './utils/command-executor';
 
 @Controller()
 export class AppController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandExecutor: CommandExecutor) {}
 
   @Get()
   async getHello(): Promise<void> {
-    return await this.commandBus.execute(new SomethingCommand('test'));
+    return await this.commandExecutor.execute(
+      new CreateSomethingCommand('test'),
+    );
   }
 }
